@@ -19,36 +19,53 @@ final class ViewController: UIViewController {
     @IBOutlet private var greenSlider: UISlider!
     @IBOutlet private var blueSlider: UISlider!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         colorView.layer.cornerRadius = 10
+        colorView.layer.borderWidth = 5
+        colorView.layer.borderColor = UIColor.darkGray.cgColor
+        
         updateColorOfView()
         
+        updateSliderValues()
     }
     
     @IBAction private func redSliderAction(_ sender: UISlider) {
-        redSliderValue.text = String(format: "%.2f", sender.value)
         updateColorOfView()
-    }
-    @IBAction private func greenSliderAction(_ sender: UISlider) {
-        greenSliderValue.text = String(format: "%.2f", sender.value)
-        updateColorOfView()
-    }
-    @IBAction private func blueSliderAction(_ sender: UISlider) {
-        blueSliderValue.text = String(format: "%.2f", sender.value)
-        updateColorOfView()
+        switch sender {
+        case redSlider:
+            redSliderValue.text = string(from: redSlider)
+        case greenSlider:
+            greenSliderValue.text = string(from: greenSlider)
+        default:
+            blueSliderValue.text = string(from: blueSlider)
+        }
     }
     
-}
-
-// MARK: - Update color of view
-extension ViewController {
+    private func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
+    }
+    
+    private func updateSliderValues() {
+        redSliderValue.text = string(from: redSlider)
+        greenSliderValue.text = string(from: greenSlider)
+        blueSliderValue.text = string(from: blueSlider)
+    }
+    
     private func updateColorOfView() {
         colorView.backgroundColor = UIColor(
-            red: CGFloat(redSlider.value),
-            green: CGFloat(greenSlider.value),
-            blue: CGFloat(blueSlider.value),
+            red: redSlider.value.cgFloat(),
+            green: greenSlider.value.cgFloat(),
+            blue: blueSlider.value.cgFloat(),
             alpha: 1
         )
+    }
+}
+
+extension Float {
+    func cgFloat() -> CGFloat {
+        CGFloat(self)
     }
 }
